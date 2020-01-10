@@ -1,0 +1,6 @@
+System succesfully updated. The following packages were upgraded:
+
+upgrade: upgrMsg
+dist-upgrade: dupgrMsg
+
+Your hostname 
