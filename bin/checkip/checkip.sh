@@ -3,8 +3,8 @@
 . /etc/rpi/globals.conf 
 basedir=${bindir}/checkip
 wrongipfile=$basedir/checkiptries.log
-oldip=$(cat $basedir/checkip.dat)
 hostname=$(hostname)
+oldip=$(dig +short $hostname.l8at9.org)
 newip=$(curl $publicipservice$hostname 2>> /dev/null)
 
 if [ ! -f $basedir/$dynipservice.sh ] ; then
@@ -16,10 +16,9 @@ fi;
 #echo exresult = $exresult
 
 if [ "$oldip" != "$newip" -a "$newip" != "" ] ; then
-  . $basedir/$dynipservice.sh $dynipusername $dynippassword $hostname $dynipdomain 2> /dev/null
+  . $basedir/$dynipservice.sh $dynipusername $dynippassword $newip $hostname $dynipdomain 2> /dev/null
   sed -e "s~newhomeip~$newip~g" $basedir/checkip.template | sed -e "s~changeipstatus~$changeip_response~g" | sed -e "s~hostname~$hostname~g" | /usr/bin/mail -a "From: $hostname <$fromEmail>" -s "[$hostname] IP has changed" $destEmail 
   logger -p local7.info "Public ip is changed from $oldip to $newip"
-  echo "$newip" > $basedir/checkip.dat
 fi;
 
 if [ "$newip" == "" ] ; then

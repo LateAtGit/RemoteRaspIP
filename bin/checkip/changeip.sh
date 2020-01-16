@@ -4,7 +4,6 @@
 #echo $2
 #echo $3
 #echo $4
+#echo $5
 
-#exresult=pippero
-
-changeip_response=$(curl https://nic.ChangeIP.com/nic/update?u=${1}\&p=${2}&ip="$newip"\&hostname=${3}.${4} 2> /dev/null)
+changeip_response=$(curl https://nic.ChangeIP.com/nic/update?u=${1}\&p=${2}\&ip=${3}\&hostname=${4}.${5} 2> /dev/null)
